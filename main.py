@@ -7,6 +7,7 @@ api_id = 123456789453556
 api_hash = 'hash'
 
 name = ''
+max_media_bytes=524288000
 
 try:
     f = open('sessioninfo', 'x')
@@ -70,6 +71,32 @@ async def backup():
                 write_to_file(f'{dir_path}{dialog.name}_{dialog.id}.txt', f'{first_name}: {message.text}')
 
             if message.photo or message.video or message.gif or message.voice or message.file or message.audio:
+                if message.video:
+                    print(f'Size: {message.video.size}')
+                    if message.video.size > max_media_bytes:
+                        write_to_file(f'{dir_path}{dialog.name}_{dialog.id}.txt',
+                                      f'{first_name}: ignored file too large; caption: {message.text}')
+                if message.gif:
+                    print(f'Size: {message.gif.size}')
+                    if message.gif.size > max_media_bytes:
+                        write_to_file(f'{dir_path}{dialog.name}_{dialog.id}.txt',
+                                      f'{first_name}: ignored file too large; caption: {message.text}')
+                if message.voice:
+                    print(f'Size: {message.voice.size}')
+                    if message.voice.size > max_media_bytes:
+                        write_to_file(f'{dir_path}{dialog.name}_{dialog.id}.txt',
+                                      f'{first_name}: ignored file too large; caption: {message.text}')
+                if message.file:
+                    print(f'Size: {message.file.size}')
+                    if message.file.size > max_media_bytes:
+                        write_to_file(f'{dir_path}{dialog.name}_{dialog.id}.txt',
+                                      f'{first_name}: ignored file too large; caption: {message.text}')
+                if message.audio:
+                    print(f'Size: {message.audio.size}')
+                    if message.audio.size > max_media_bytes:
+                        write_to_file(f'{dir_path}{dialog.name}_{dialog.id}.txt',
+                                      f'{first_name}: ignored file too large; caption: {message.text}')
+
                 path = await message.download_media()
                 print(path)
                 Path(f'{dir_path}media/').mkdir(parents=True, exist_ok=True)
